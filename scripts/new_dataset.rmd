@@ -1,0 +1,273 @@
+---
+title: "Adaption of workflow to new dataset"
+output:
+  html_document:
+    theme: united
+    df_print: kable
+date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
+author:
+    'Guido Schlögel, Sonja Tockner'
+---
+
+```{r setup, include=FALSE}
+all_times <- list()  # store the time for each chunk
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      now <<- Sys.time()
+    } else {
+      res <- difftime(Sys.time(), now, units = "secs")
+      all_times[[options$label]] <<- res
+    }
+  }
+}))
+knitr::opts_chunk$set(
+  tidy = TRUE,
+  tidy.opts = list(width.cutoff = 95),
+  message = FALSE,
+  warning = FALSE,
+  time_it = TRUE
+)
+```
+
+In this document only the differences to the original workflow are described. A more detailed description of the workflow is found in the tutorial description.
+
+## Preperation
+
+The workflow of the Seurat tutorial is adapted to the dataset
+
+[1k Brain Cells from an E18 Mouse](https://www.10xgenomics.com/resources/datasets/1-k-brain-cells-from-an-e-18-mouse-2-standard-2-1-0)
+
+The filtered data set is unpacked into the data folder of the project.
+
+
+## Loading libraries
+```{r}
+library(dplyr)
+library(Seurat)
+library(patchwork)
+```
+## Setup the seurat Object
+path is changed to the folder with the new data.
+
+```{r}
+# Load the PBMC dataset
+pbmc.data <- Read10X(data.dir = "../data/neurons_900_filtered_gene_bc_matrices/filtered_gene_bc_matrices/mm10/")
+# Initialize the Seurat object with the raw (non-normalized data).
+pbmc <- CreateSeuratObject(counts = pbmc.data, project = "neurons_900", min.cells = 3, min.features = 200)
+pbmc
+```
+## Preprocessing and Quality control
+In the new dataset the mitochondrial genes start with "mt-". The lower case is not recognized by the original pattern. It was adapted to find the desired genes in the new dataset.
+```{r}
+# The [[ operator can add columns to object metadata. This is a great place to stash QC stats
+pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-|^mt-") # changed pattern
+
+```
+
+## Visualization of QC Metrices
+```{r}
+# Visualize QC metrics as a violin plot
+VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+
+```
+## Visualization of feature-feature relationships by FeatureScatter
+```{r}
+# FeatureScatter is typically used to visualize feature-feature relationships, but can be used
+# for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
+
+plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+plot1 + plot2
+
+```
+
+## Subsets with specific filter criteria can also be defined
+the used data has a higher number of features. Therefore the filter was redefined according to the plots above.
+```{r}
+pbmc <- subset(pbmc, subset = nFeature_RNA > 1000 & nFeature_RNA < 7000 & percent.mt < 10) # adapted values according to plots
+
+```
+
+## Normalization of the data
+
+The normalization is performed using the standard parameters.
+
+```{r}
+### the same
+pbmc <- NormalizeData(pbmc)
+
+```
+
+## Feature selection for the identification of highly variable features
+The number of selected features remains unchanged for the new data
+```{r}
+pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
+
+# Identify the 10 most highly variable genes
+top10 <- head(VariableFeatures(pbmc), 10)
+
+# plot variable features with and without labels
+plot1 <- VariableFeaturePlot(pbmc)
+plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
+plot1 + plot2
+
+
+```
+
+## Scaling of the data
+We use the standard options here as we just need the selected features afterwards. There is no need to scale the not-selected features.
+```{r}
+pbmc <- ScaleData(pbmc)
+```
+## Linear dimension reduction
+```{r}
+pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
+
+```
+## Visualizing cells and features that define PCA
+```{r}
+# Examine and visualize PCA results a few different ways
+print(pbmc[["pca"]], dims = 1:5, nfeatures = 5)
+
+```
+
+```{r}
+VizDimLoadings(pbmc, dims = 1:2, reduction = "pca")
+
+```
+
+```{r}
+DimPlot(pbmc, reduction = "pca")
+
+```
+We observe that PC1 is evenly distributed while PC2 is influenced by a low number of values.
+## Visualization with DimHeatmap()
+As in the Tutorial we use the heat maps to select the PCs containing the most relevant information for our dataset. We observe that the separation is no optimal and that PC1 has the biggest impact.
+```{r}
+DimHeatmap(pbmc, dims = 1, cells = 500, balanced = TRUE)
+```
+
+```{r}
+DimHeatmap(pbmc, dims = 1:15, cells = 500, balanced = TRUE)
+
+```
+## Determine the dimensionality of a dataset
+We use the JackStraw plot as well as the EllbowPlot the determine the number of PCs used for further analysis.
+### Jack Straw Plot
+```{r}
+# NOTE: This process can take a long time for big datasets, comment out for expediency. More
+# approximate techniques such as those implemented in ElbowPlot() can be used to reduce
+# computation time
+pbmc <- JackStraw(pbmc, num.replicate = 100)
+pbmc <- ScoreJackStraw(pbmc, dims = 1:20)
+
+```
+Comparison of the distribution of p-values for each PC with a unit distribution. Significant PCs show a strong enrichment of features with low p-values (solid curve above the dashed line).
+```{r}
+JackStrawPlot(pbmc, dims = 1:20)
+
+```
+### Elbow plot
+
+```{r}
+ElbowPlot(pbmc, ndims = 30)
+
+```
+### Select PCs
+The Jack Straw Plot is not conclusive. The ellbow plot suggest that 15 PCs could be a good choice. We will later try to differnt amount of PCs to check if the rusults are robust to these changes.
+```{r}
+used_dims = 15
+```
+
+
+
+## Cluster the cells
+We use the standard graph based clustering approach as we do not know how many cluster we can expect.
+
+```{r}
+pbmc <- FindNeighbors(pbmc, dims = 1:used_dims)
+pbmc <- FindClusters(pbmc, resolution = 0.5)
+```
+
+```{r}
+# Look at cluster IDs of the first 5 cells
+head(Idents(pbmc), 5)
+
+```
+## Non-linear dimensional reduction(UMAP)
+We use UMAP to visualize the clusters. 
+
+```{r}
+pbmc <- RunUMAP(pbmc, dims = 1:used_dims)
+
+```
+
+```{r}
+# note that you can set `label = TRUE` or use the LabelClusters function to help label
+# individual clusters
+DimPlot(pbmc, reduction = "umap")
+
+```
+The name of the saved Seurat object is changed to seperate the different datasets.
+```{r}
+### output ordner angelegt
+saveRDS(pbmc, file = "../output/pbmc_neurons_900.rds")
+
+```
+
+## Search for differentially expressed traits (cluster biomarkers)
+
+We search for the 2 genes with the biggest fold change for each cluster. Later we use them to mark the clusters.
+
+```{r}
+# find markers for every cluster compared to all remaining cells, report only the positive
+# ones
+pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+biomarkers <- pbmc.markers %>%
+    group_by(cluster) %>%
+    slice_max(n = 2, order_by = avg_log2FC)
+print(biomarkers)
+
+```
+
+## Visualization of the marker expression
+We use the VinPlot to show the distribution of the genes with the highest positive and negative loadings of PC1. We see the different expressions in the different clusters and can, for example, see that Phgdh is almost exlusivly expressted in the clusters 3 and 4.
+```{r}
+VlnPlot(pbmc, features = c("Dbi", "Phgdh"))
+```
+
+```{r}
+# you can plot raw counts as well
+VlnPlot(pbmc, features = c("Tubb3", "Tmsb10"), slot = "counts", log = TRUE)
+```
+Nest we check our marker genes for the different clusters. We slice the biomarkers data frame to just view the genes with the highest fold change.
+```{r}
+FeaturePlot(pbmc, features = biomarkers$gene[c(TRUE, FALSE)])
+```
+
+## DoHeatmap () can be used to generate an expression heatmap for cells and features. The top 20 markers for each cluster are plotted here.
+```{r}
+pbmc.markers %>%
+    group_by(cluster) %>%
+    top_n(n = 10, wt = avg_log2FC) -> top10
+DoHeatmap(pbmc, features = top10$gene) + NoLegend()
+```
+
+## Assigning marker genes to the clusters
+In this step we do not have enough background information to link our marker genes with cell types. Therfore we mark the clusters with the best marker gene.
+
+    
+```{r}
+new.cluster.ids <- biomarkers$gene[c(TRUE, FALSE)]
+names(new.cluster.ids) <- levels(pbmc)
+pbmc <- RenameIdents(pbmc, new.cluster.ids)
+DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
+```
+
+```{r}
+saveRDS(pbmc, file = "../output/neurons_900_final.rds")
+```
+
+
