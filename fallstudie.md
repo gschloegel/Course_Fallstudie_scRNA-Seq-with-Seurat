@@ -1,21 +1,21 @@
 # Case Study - Replication of Seurat Workflow
 
-Autoren: Guido Schlögel
+Autoren: Guido Schlögel 00727019
          Sonja Tockner 00708717
 
 ## Introduction
 
 Replication of results is an important part of science. As it is important to avoid the replication crisis in data science, we show here how the Seurat tutorial for single cell RNA sequencing (scRNA-Seq) can be replicated and how it can be adapted to a different dataset.
 
-## 1.	Preparation. As a preparation for the data analysis workflow, thoroughly read the given manuscripts
+## 1.	Preparation. As a preparation for the data analysis workflow, thoroughly read the given manuscripts (s. literature)
 
-###  a.	What are the advantages of the scRNA-Seq method compared to bulk RNA-Seq?
+###  a.	Advantages of the scRNA-Seq method compared to bulk RNA-Seq
 
 Single cell RNA Seq is characterized by the fact that each sequencing library represents a single cell. Bulk RNA-Seq used to be standard for all -omics disciplines and represents a whole cell population. Within a single tissue, there are many similar cells that may have specific functions, which can be addressed with scRNA Seq. Bulk sequencing studies the genome/transcriptome, e.g., the differential gene expression of healthy and diseased individuals is compared as an average representation (studying biomarkers and biology of diseases). scRNA Seq has several advantages over bulk RNA-seq, including more accurate prediction of disease, discovery of new cell types, and the ability to study gene expression in individual cells (e.g., finding differences in specific cell types).
 
 scRNA Seq enables detailed analysis of individual cells and reveals cellular heterogeneity. In comparison, the bulk method measures the average expression across a population of cells and the cellular heterogeneity is masked. ScRNA Seq provides high resolution and transcriptional profiling of thousands of individual cells, allows to understand gene expression at a single cell level and finds differences within a heterogenous sample. It measures the distribution of the expression level for each gene across a population of cells. In comparison, a bulk sample represents many cells where all kinds of RNA sequences from the sample are extracted without filtering and enrichment, measuring the average expression level for each gene across a large population of input cells (e.g., a sample from the same tissue from different species).
 
-### b.	What are the basic steps of the scRNA-Seq analysis?
+### b.	Basic steps of the scRNA-Seq analysis
 
 The workflow for scRNA-Seq analysis basically consists of the preprocessing step of the raw data (quality control, normalization, data correction, feature selection and dimensions reduction) and the cell-and gene level downstream analysis of the count data.  
 Biological tissue samples are used as input material. First, single-cell dissociation is performed, a suspension is generated, and the tissue is digested. This is followed by the isolation of the single cells. A distinction is made between plate-based and droplet-based methods. The problem can arise that multiple cells are captured together (multiplets, doublets), nonviable cells are captured, or no cells are captured (empty wells).  In the next step, library construction is performed (breaking down the cell membrane), intracellular mRNA is captured, reverse-transcribed to cDNA molecules and amplified. The mRNA is then labeled with barcodes and possibly UMIs. Libraries are pooled for sequencing. Sequencing produces read data and is submitted to quality control. 
@@ -66,10 +66,12 @@ Genes are grouped based on their involvement in common biological processes, e.g
 3. Gene regulatory networks
 Genes do not function independently. The expression level of a gene is determined by a complex interplay of regulatory interactions. Networks make it possible to discover the underlying regulatory interactions and to measure gene co-expression.
 
-### c.	What are common problems and how are they typically solved?
+### c.	Common problems and how are they typically solved
 
-### d.	What are the major challenges in integrating single-cell transcriptomic data across different
-### conditions, technologies, and species? How they can be solved?
+Actually, the main task is to better understand heterogeneous cell populations. With classical methods it is not possible to get results with good resolution. Therefore, we nees methods that take this problem into account. (e.g. one can better understand tissues, use in cancer research, analysis of microbial systems...). Predefined workflows using specialized software simplify the reproducibility of complex issues.
+
+### d.	Major challenges in integrating single-cell transcriptomic data across different
+### conditions, technologies, and species and how they can be solved
 
 ScRNA Seq aims to represent a single condition, technology, or species and to discover cellular phenotypes. This enables the systematic reconstruction of cellular taxonomies in the human body. The biggest challenge is to identify subpopulations from multiple datasets. It is difficult to distinguish between changes in the composition of cell types in a sample and the expression changes within a given cell type when analyzing multiple datasets at the same time. Therefore, powerful new methods and a computational strategy are needed for learning between multiple datasets.
 For example, zero-inflated differential expression tests have been tailored to scRNA-seq data to identify changes within a single cell type and clustering approaches detect proportional shifts across conditions if cell types are conserved. The methods should make it possible to learn between several data sets at the same time to facilitate a comparative analysis afterwards. Multivariate methods are used here, for example. One can identify gene correlation patterns that are conserved across data sets and embed cells in a common low-dimensional space (e.g., through CCA). CCA enables information from several data sets to be displayed consistently (linear combination of features in data sets that are maximally correlated). Data sets are treated as multiple measurements of a gene-gene covariance structure, and one looks for patterns that are common to the data sets. Multi-Set CCA enables the integration of several data sets.
@@ -80,8 +82,6 @@ scRNA Seq data are generally noisier and more complex than bulk RNA Seq data and
 
 The Seurat workflow analyzes a dataset of Peripheral Blood Mononuclear Cells(PBMC). Raw single-cell expression data are used as an input. Aim of the workflow is finding clusters in the data with a graph-based clustering method. It uses a combination of feature selection, dimensionality reduction and clustering algorithms to identify cell types. 
 We use the Seurat workflow to robustly separate different cell types in the sample. The target is to integrate the whole workflow from data pre-processing to separation of cell types and the assignment of cell types to the clusters. It used highly variable features to get reliable results that can be compared between different samples.
-
-???? Ist da vielleicht was anderes gemeint?????
 
 ## 2.	Replication. To replicate the tutorial, you need to reproduce all figures presented in the workflow. Address at least the following questions
 
@@ -105,8 +105,6 @@ The Seurat package has its own GitHub repository. Past versions of the Tutorial 
 The created Seurat Object is saved as an .rds file. As this is standard in R and further analysis will be done with R as well, this is a good choice.
 
 6. For Analyses That Include Randomness, Note Underlying Random Seeds
-????????????results of own dataset (including plots) - what changes
-
 The way the Seurat packages deals with randomness, was confusing for us. The seed is not set in the notebook, but hidden in the Seurat package. This leeds to the strange situation that for example the Jack Straw Plot differs visibly, if not significantly, from the tutorial, but there is no random change when run again as expected. The difference is due to the different handling of seed values on different operating systems.
 For us it had been nicer to set the seed in the final notebook to avoid confusion.
 
@@ -225,6 +223,8 @@ Cells from a combined cortex, hippocampus and sub ventricular zone of an E18 mou
 
 ### a)	What challenges did you face when applying the workflow to a new data set?
 
+One challenge was certainly to define the features/markers for the final analysis. In the original tutorial, this point was not explicitly described or the markers were already predefined in the code. When using the new dataset, it was of course necessary to deal with it more intensively. For this purpose it was necessary to look at the code in more detail in order to be able to make a meaningful selection. 
+
 ### b)	What code modifications were required?
 * First the path had to be changed to the folder with the new dataset
 * In the new dataset the mitochondrial genes start with "mt-". The lower case is not recognized by the original pattern. The code was adapted to find the desired genes in the    new dataset
@@ -235,7 +235,9 @@ Cells from a combined cortex, hippocampus and sub ventricular zone of an E18 mou
 ### c)	Are the results comparable to the results of the original tutorial, or do they deviate in some
 ### unexpected ways?
 
-### d)	Discuss all the results and interpret themts
+The replication of the tutorial with the new dataset yielded results with the new dataset which unfortunately were not quite as nice as in the original workflow. Only PC 1 showed a good separation in the new dataset, which made the plots more difficult to interpret and the results not quite as impressive. 
+
+### d)	Discuss all the results and interpret them
 
 It is possible to reproduce the tutorial and use the method on a different dataset. While it worked well there are some options to make it easier. First the form of a notebook makes it difficult to see where parameters are set and manual interventions are necessary. It is hard to make changes without checking the whole code. In our opinion it would be easier to write the code in functions and use all variables as function parameters.
 
