@@ -1,5 +1,8 @@
 # Case Study - Replication of Seurat Workflow
 
+Autoren: Guido Schlögel
+         Sonja Tockner 00708717
+
 ## Introduction
 
 Replication of results is an important part of science. As it is important to avoid the replication crisis in data science, we show here how the Seurat tutorial for single cell RNA sequencing (scRNA-Seq) can be replicated and how it can be adapted to a different dataset.
@@ -84,6 +87,8 @@ We use the Seurat workflow to robustly separate different cell types in the samp
 
 ### a)	Is a replication of the tutorial possible? Compare the tutorial against the rules/recommendations from Sandve et al. 2013.; comment on the clarity of the description and documentation.
 
+#### 10 rules/recommendations from Sandve et al. 2013:
+
 1. For Every Result, Keep Track of How It Was Produced
 The Tutorial is available as a R-notebook and vignette. So all Steps and R commands are available 
 
@@ -101,6 +106,7 @@ The created Seurat Object is saved as an .rds file. As this is standard in R and
 
 6. For Analyses That Include Randomness, Note Underlying Random Seeds
 ????????????results of own dataset (including plots) - what changes
+
 The way the Seurat packages deals with randomness, was confusing for us. The seed is not set in the notebook, but hidden in the Seurat package. This leeds to the strange situation that for example the Jack Straw Plot differs visibly, if not significantly, from the tutorial, but there is no random change when run again as expected. The difference is due to the different handling of seed values on different operating systems.
 For us it had been nicer to set the seed in the final notebook to avoid confusion.
 
@@ -137,18 +143,18 @@ First we set up the environment. While there are different options for this we d
 
 to create the environment. We kept the package versions used in the tutorial to avoid the risk of incompatibilities and tried to keep the environment as small as possible. The environment was exported as .yaml file to allow easy replication.
 
-mamba is used instead of conda to to speed up the environment management. This is especially relevant as we use the large conda forge channel.
+Mamba is used instead of conda to to speed up the environment management. This is especially relevant as we use the large conda forge channel.
 
 It is also required to create the folder structure manually. The notebooks have to be in a subfolder (scripts in our case), the exact location of the data files has to be set in the notebook and an output folder must be present before running the code.
 
-## Work flow description (basic details in R Notebook)
+#### Work flow description (basic details in R Notebook)
 
-The workflow runs in the following basic steps
+The workflow runs in the following basic steps: 
 
-### Pre-processing
+##### Pre-processing
 First we discard low quality cells, e.g. cells with very few genes, or suspected doublets and triplets with an high amount of genes. We normalize the data using a logarithmic method. 
 
-### Identification of highly variable features and PCA
+#### Identification of highly variable features and PCA
 
 Next we limit the further steps to the features showing a highly variable. This ensure that we get less noise form the other features. This makes the later calculation faster and more importantly leads to better results.
 
@@ -162,28 +168,22 @@ After the PCA we need to know how many dimensions are needed for the further ana
 #### Cluster the cells
 
 A graph based clustering approach is used for the identified relevant PCs. As we do not know a priory how many clusters/cell type we will find this is a sensible approach.
-
 The clusters are displayed using the UMAP non linear dimension reduction.
 
 #### finding differentially expressed features
 
 Finally we want to identify the clusters. We use VlnPlot to see in which cluster the genes with the highest loadings are expressed. Additionally the genes with the highest fold change for each cluster are calculated. With additional information about the cell types expected in the sample the clusters can be assigned to cell types.
 
-### Assess reproducibility of code
+#### Assess reproducibility of code
 
 cite Sandve 2013
-
 The rules form the Article are used to assess how easy the code can be reproduced and reused.
-
-### Analysis on own dataset
-
-cite source of dataset
-
-A new dataset was introduced to test the possibility to reuse the code.
 
 ## Results
 
-### von meinem Word > nachdem du einiges geändert hast und ich da noch nicht ganz durchblicke würde ich vorschlagen du ergänzt da noch was du magst zu dem was du geschrieben hast...und den Rest geben wir weg
+???? Plots oder Figures können wir hier nicht reinstellen oder??????
+
+### das von meinem Word > nachdem du einiges geändert hast und ich da noch nicht ganz durchblicke würde ich vorschlagen du ergänzt da noch was du magst zu dem was du geschrieben hast...und den Rest geben wir weg
 
 The Seurat workflow analyses a dataset of Peripheral Blood Mononuclear Cells (PBMCs) from 10X Genomics and consists out of 2700 single cell data sequenced with Illumina's NextSeq 500.
 Setting up the Seurat objects begins with reading in the data with the data from the Cell ranger pipeline from 10 genomics. CellRanger is an analysis pipeline that processes single-cell data to align reads, generate feature barcode matrices, performs clustering and other secondary analysis. The output is an UMI (Unique Molecular Identifier) count matrix. UMIs are short sequences that are added to DNA sequences to uniquely identify the DNA molecule. The values in the matrix represent the number of molecules for each feature (gene, row) detected in each cell (column). The Count Matrix is used to create the Seurat object, which contains both the data and the analyses (e.g., PCA, clustering results), for a data set.
@@ -209,6 +209,11 @@ As the last step in the workflow, canonical markers are sent to assign the unbia
 
 ## 3.	Expanding the work. Find a publicly available data set and apply the same workflow. You may need to adapt some of the code to make it work.
 
+### Analysis on own dataset
+
+A new dataset was introduced to test the possibility to reuse the code.
+
+## Results
 The dataset we used is from 10X Genomics. 
 https://www.10xgenomics.com/resources/datasets/1-k-brain-cells-from-an-e-18-mouse-2-standard-2-1-0
 
@@ -221,19 +226,23 @@ Cells from a combined cortex, hippocampus and sub ventricular zone of an E18 mou
 ### a)	What challenges did you face when applying the workflow to a new data set?
 
 ### b)	What code modifications were required?
+* First the path had to be changed to the folder with the new dataset
+* In the new dataset the mitochondrial genes start with "mt-". The lower case is not recognized by the original pattern. The code was adapted to find the desired genes in the    new dataset
+* The new dataset has a higher number of features. Therefore the filter was redefined according to the plots 
+* The name of the saved Seurat object is changed to seperate the different datasets
+* Assigning marker genes to the clusters: In this step we do not have enough background information to link our marker genes with cell types. Therfore we mark the clusters with the best marker gene.
 
 ### c)	Are the results comparable to the results of the original tutorial, or do they deviate in some
 ### unexpected ways?
 
 ### d)	Discuss all the results and interpret themts
-summarize what is written in the skript
 
 It is possible to reproduce the tutorial and use the method on a different dataset. While it worked well there are some options to make it easier. First the form of a notebook makes it difficult to see where parameters are set and manual interventions are necessary. It is hard to make changes without checking the whole code. In our opinion it would be easier to write the code in functions and use all variables as function parameters.
 
 It would be possible to do the analysis in 2 well defined steps. Step 1 starting from pre-processing and ending with the analysis of the PCs. At this point manual intervention is done. The rest of the analyses can be performed without manual intervention in a second function or method.
 
+### Literature
 
-Literature:
 Luecken and Theis 2019. Current best practices in single-cell RNA-seq analysis: a tutorial. Molecular
 Systems Biology. 15(6):e8746. doi:10.15252/msb.20188746.
 
