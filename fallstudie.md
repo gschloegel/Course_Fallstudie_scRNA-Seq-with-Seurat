@@ -123,7 +123,7 @@ Similar to rule 8 this is missing as a thorough explanation of the results is no
 The code is available in the GitHub repository.
 
 ### b)	How did you set up the required environment?
-First we set up the environment. While there are different options for this we decided to use anaconda (miniconda) for this task. We set up the conda forge channel as default and run the following command
+First we set up the environment. While there are different options for this we decided to use anaconda (miniconda) for this task. We set up the conda forge channel as default and run the following command:
 
 `mamba create -n seurat r-base=4.1.0 r-ggplot2=3.3.5 patchwork=1.1.1 SeuratObject=4.0.2 Seurat=4.0.4 dplyr=1.0.7 r-knitr=1.33`
 
@@ -156,9 +156,9 @@ First we discard low quality cells, e.g. cells with very few genes, or suspected
 
 #### Identification of highly variable features and PCA
 
-Next we limit the further steps to the features showing a highly variable. This ensure that we get less noise form the other features. This makes the later calculation faster and more importantly leads to better results.
+Next we limit the further steps to the features showing a high variability. This ensures that we get less noise from the other features and makes the later calculation faster and more importantly leads to better results.
 
-For the PCA the data from the variable features is normalized (mean = 0, variance = 1). After the PCA is performed the results are visualized. The loadings are presented, a scatter plot of the first PCs is created and head maps for the first PCs are created. This helps to identify where the relevant information can be found and which PCs and which loadings/genes are used later.
+For the PCA the data from the variable features is normalized (mean = 0, variance = 1). After the PCA is performed the results are visualized. The loadings are presented, a scatter plot of the first PCs is created and heatmaps for the first PCs are created. This helps to identify where the relevant information can be found and which PCs and which loadings/genes are used later.
 
 #### determine 'dimensionality' of dataset
 
