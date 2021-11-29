@@ -31,16 +31,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this document only the differences to the original workflow are described. A more detailed description of the workflow is found in the tutorial description.
+In this document only the differences to the original workflow are described. A more detailed description of the workflow is found in the original tutorial description.
 
 ## Preperation
 
-The workflow of the Seurat tutorial is adapted to the dataset
+The workflow of the Seurat tutorial is adapted to the new dataset:
 
-[1k Brain Cells from an E18 Mouse](https://www.10xgenomics.com/resources/datasets/1-k-brain-cells-from-an-e-18-mouse-2-standard-2-1-0)
+[1k Brain Cells from an E18 Mouse]
+(https://www.10xgenomics.com/resources/datasets/1-k-brain-cells-from-an-e-18-mouse-2-standard-2-1-0)
+* Cells from a combined cortex, hippocampus and sub ventricular zone of an E18 mouse
+*	Sequenced on Illumina HiSeq2500 with approximately 56,000 reads per cell
+*	26bp read1 (16bp Chromium barcode and 10bp UMI), 98bp read2 (transcript), and 8bp I7 sample barcode
 
 The filtered data set is unpacked into the data folder of the project.
-
 
 ## Loading libraries
 ```{r}
@@ -49,7 +52,7 @@ library(Seurat)
 library(patchwork)
 ```
 ## Setup the seurat Object
-path is changed to the folder with the new data.
+The path has to be changed to the folder with the new data.
 
 ```{r}
 # Load the PBMC dataset
@@ -58,11 +61,11 @@ pbmc.data <- Read10X(data.dir = "../data/neurons_900_filtered_gene_bc_matrices/f
 pbmc <- CreateSeuratObject(counts = pbmc.data, project = "neurons_900", min.cells = 3, min.features = 200)
 pbmc
 ```
-## Preprocessing and Quality control
-In the new dataset the mitochondrial genes start with "mt-". The lower case is not recognized by the original pattern. It was adapted to find the desired genes in the new dataset.
+## Preprocessing and Quality contr
+In the new dataset the mitochondrial genes start with "mt-". The lower case is not recognized by the original pattern. The code was adapted to find the desired genes in the new dataset.
 ```{r}
 # The [[ operator can add columns to object metadata. This is a great place to stash QC stats
-pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-|^mt-") # changed pattern
+pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-|^mt-") # changing pattern
 
 ```
 
@@ -84,9 +87,9 @@ plot1 + plot2
 ```
 
 ## Subsets with specific filter criteria can also be defined
-the used data has a higher number of features. Therefore the filter was redefined according to the plots above.
+The new dataset has a higher number of features. Therefore the filter was redefined according to the plots above.
 ```{r}
-pbmc <- subset(pbmc, subset = nFeature_RNA > 1000 & nFeature_RNA < 7000 & percent.mt < 10) # adapted values according to plots
+pbmc <- subset(pbmc, subset = nFeature_RNA > 1000 & nFeature_RNA < 7000 & percent.mt < 10) # adapted values according to the plots
 
 ```
 
@@ -128,7 +131,7 @@ pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 ```
 ## Visualizing cells and features that define PCA
 ```{r}
-# Examine and visualize PCA results a few different ways
+# Examine and visualize PCA results in a few different ways
 print(pbmc[["pca"]], dims = 1:5, nfeatures = 5)
 
 ```
@@ -144,7 +147,7 @@ DimPlot(pbmc, reduction = "pca")
 ```
 We observe that PC1 is evenly distributed while PC2 is influenced by a low number of values.
 ## Visualization with DimHeatmap()
-As in the Tutorial we use the heat maps to select the PCs containing the most relevant information for our dataset. We observe that the separation is no optimal and that PC1 has the biggest impact.
+As in the original Tutorial we use the heat maps to select the PCs containing the most relevant information for our dataset. We observe that the separation is not optimal and that PC1 has the biggest impact.
 ```{r}
 DimHeatmap(pbmc, dims = 1, cells = 500, balanced = TRUE)
 ```
@@ -176,7 +179,7 @@ ElbowPlot(pbmc, ndims = 30)
 
 ```
 ### Select PCs
-The Jack Straw Plot is not conclusive. The ellbow plot suggest that 15 PCs could be a good choice. We will later try to differnt amount of PCs to check if the rusults are robust to these changes.
+The Jack Straw Plot is not conclusive. The ellbow plot suggest that 15 PCs could be a good choice. We will later try different amount of PCs to check if the results are robust to these changes.
 ```{r}
 used_dims = 15
 ```
@@ -219,7 +222,7 @@ saveRDS(pbmc, file = "../output/pbmc_neurons_900.rds")
 
 ## Search for differentially expressed traits (cluster biomarkers)
 
-We search for the 2 genes with the biggest fold change for each cluster. Later we use them to mark the clusters.
+We search for the 2 genes with the highest fold change for each cluster. Later we use them to mark the clusters.
 
 ```{r}
 # find markers for every cluster compared to all remaining cells, report only the positive
