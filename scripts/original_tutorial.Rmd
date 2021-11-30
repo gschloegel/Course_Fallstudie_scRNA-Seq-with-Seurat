@@ -156,7 +156,7 @@ Next, we apply a linear transformation ('scaling') that is a standard pre-proces
 *
 ```{r regress, fig.height=7, fig.width=11, results='hide'}
 all.genes <- rownames(pbmc)
-pbmc <- ScaleData(pbmc, features = all.genes)z
+pbmc <- ScaleData(pbmc, features = all.genes)
 
 ```
 <details>
@@ -345,7 +345,7 @@ library(ggplot2)
 plot <- DimPlot(pbmc, reduction = "umap", label = TRUE, label.size = 4.5) + xlab("UMAP 1") + ylab("UMAP 2") + 
   theme(axis.title = element_text(size = 18), legend.text = element_text(size = 18)) + 
   guides(colour = guide_legend(override.aes = list(size = 10)))
-ggsave(filename = "../output/images/pbmc3k_umap.jpg", height = 7, width = 12, plot = plot, quality = 50)
+ggsave(filename = "../output/pbmc3k_umap.jpg", height = 7, width = 12, plot = plot, quality = 50)
 ```
   
 ```{r save.rds, eval=FALSE}
@@ -353,11 +353,11 @@ saveRDS(pbmc, file = "../output/pbmc3k_final.rds")
 ```
   
 ```{r save2, include = FALSE}
-saveRDS(pbmc, file = "../data/pbmc3k_final.rds")
+saveRDS(pbmc, file = "../output/pbmc3k_final.rds")
 ```
   
 ```{r save.times, include = FALSE}
-write.csv(x = t(as.data.frame(all_times)), file = "../output/timings/pbmc3k_tutorial_times.csv")
+write.csv(x = t(as.data.frame(all_times)), file = "../output/pbmc3k_tutorial_times.csv")
 ```
   
 <details>
