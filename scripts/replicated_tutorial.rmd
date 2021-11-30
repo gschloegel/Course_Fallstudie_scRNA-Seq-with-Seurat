@@ -1,11 +1,37 @@
 ---
-title: "R Notebook"
-output: github_document
+title: "Replication and Description of Seurat Tutorial"
+# output: github_document
 
-Autoren:
-    Guido Schlögel
-    Sonja Tockner
+output:
+  html_document:
+    theme: united
+    df_print: kable
+date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
+author:
+    'Guido Schlögel, Sonja Tockner'
 ---
+
+```{r setup, include=FALSE}
+all_times <- list()  # store the time for each chunk
+knitr::knit_hooks$set(time_it = local({
+  now <- NULL
+  function(before, options) {
+    if (before) {
+      now <<- Sys.time()
+    } else {
+      res <- difftime(Sys.time(), now, units = "secs")
+      all_times[[options$label]] <<- res
+    }
+  }
+}))
+knitr::opts_chunk$set(
+  tidy = TRUE,
+  tidy.opts = list(width.cutoff = 95),
+  message = FALSE,
+  warning = FALSE,
+  time_it = TRUE
+)
+```
 
 ### Task specification: Case study
 
