@@ -59,7 +59,7 @@ Gene level analysis examines the molecular signals in the data with different me
 
 ### c.	Common problems and how are they typically solved
 
-Actually, the main task is to better understand heterogeneous cell populations. With classical methods it is not possible to get results with good resolution. Therefore, we nees methods that take this problem into account. (e.g. one can better understand tissues, use in cancer research, analysis of microbial systems...). Predefined workflows using specialized software simplify the reproducibility of complex issues.
+A general problem is the standardization of workflows. Various platforms are available for this, Seurat is just one example. You have to decide on a tool, another point is that the programming languages in the tools are also different. It is therefore necessary to make a selection with regards to the specific question. Some problems have already been addressed in the ScRNA Seq description, for example that cells form duplicates or that in some vials there are no cells at all. In general, many problems can already arise during sampling and preprocessing, which is why sample preparation and quality control are particularly important in all work steps in both applications, as they influence the entire further analysis.
 
 ### d.	Major challenges in integrating single-cell transcriptomic data across different
 ### conditions, technologies, and species and how they can be solved
@@ -119,7 +119,7 @@ The preprocessing step is characterized by the selection and filtering of cells 
 Next we limit the further steps to the features showing a high variability. This ensures that we get less noise from the other features and makes the later calculation faster and more importantly leads to better results.
 For the PCA the data from the variable features is normalized (mean = 0, variance = 1). Scaling is intended to achieve equal weighting in downstream analysis so that highly expressed genes do not dominate. After the PCA is performed the results are visualized. The loadings are presented, a scatter plot of the first PCs is created and heatmaps for the first PCs are created. This helps to identify where the relevant information can be found and which PCs and which loadings/genes are used later.
 
-##### determine 'dimensionality' of dataset
+##### Determine 'dimensionality' of dataset
 After the PCA we need to know how many dimensions are needed for the further analyses. In the Tutorial 2 heuristic methods are used. The first is the Jack Straw plot and the second the elbow plot. The elbow plot shows a ranking of PCs based on the percentage of variance explained (cutoff between PC 7 -12)
 
 ##### Cluster the cells
