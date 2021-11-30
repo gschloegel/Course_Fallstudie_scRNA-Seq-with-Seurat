@@ -24,7 +24,7 @@ library(patchwork)
 # library(umap)
 ```
 ## Setup the seurat Object
-### Reading in the data: The Read10X() function is used to read the output of the Cellranger pipeline from 10X. Cellranger is an analysis pipeline that processes single-cell data to align reads, generates feature barcode matrices, performs clustering and other secondary analysis. The output is an UMI(Unique Molecular Identifier) count martix. UMIs are short sequences that are added to DNA sequences to uniquely identify the DNA molecule. The values in the matrix represent the number of molecules for each feature (gene, row) detected in each cell (column). The Count Matrix is used to create the Seurat object, which contains both the data and the analyses, e.g. PCA, clustering results, for a data set. 
+### Reading in the data: The Read10X() function is used to read the output of the Cellranger pipeline from 10X. Cellranger is an analysis pipeline that processes single-cell data to align reads, generates feature barcode matrices, performs clustering and other secondary analysis. The output is an UMI(Unique Molecular Identifier) count martix. UMIs are short sequences that are added to DNA sequences to uniquely identify the DNA molecule. The values in the matrix represent the number of molecules for each feature (gene, row) detected in each cell (column). The Count Matrix is used to create the Seurat object, which contains both the data and the analysis, e.g. PCA, clustering results, for a data set. 
 
 ```{r}
 # Load the PBMC dataset
@@ -124,7 +124,7 @@ DimPlot(pbmc, reduction = "pca")
 
 ```
 ## Visualization with DimHeatmap()
-### DimHeatmap() allows visualization of the primary source of heterogeneity in the dataset and can help to decide which PCs to use for further downstream analysis. Cells and features are ordered by their PCA scores, which also increases speed. this is especially important for large datasets. 
+### DimHeatmap() allows visualization of the primary source of heterogeneity in the dataset and can help to decide which PCs to use for further downstream analysis. Cells and features are ordered by their PCA scores, which also increases speed. This is especially important for large datasets. 
 ```{r}
 DimHeatmap(pbmc, dims = 1, cells = 500, balanced = TRUE)
 ```
@@ -167,8 +167,8 @@ Dendritic cell and NK aficionados may recognize that genes strongly associated w
 
 ## Cluster the cells
 ### Seutrat uses a graph-based clustering approach. The distance metric remains the same and is based on the previously identified PCs. The approach is based on manuscripts applied to graph-based clustering approaches with scRNA seq data and is characterized by a graph structure, e.g. KNN nearest neighbors. (edges drawn between cells with similar feature expression patterns) and then graph is partitioned into highly interconnected communities. 
-First, a KNN graph is constructed based on the Euclidean distance (in PCA space), edge weights are refined between all two cells based on the overlap in their neighborhood. This step is done using the FindNeighbors() function with the first 10 PCs as input. 
-To cluster the cells, modularity optimization techniques such as the Louvain algorithm or SLM are applied. Groups are iteratively clustered with the goal of optimizing the standard modularity function. The FindClusters() function is used for this, this sets the granularity for downstream clustering (higher values, more clusters). 
+First, a KNN graph is constructed based on the Euclidean distance (in PCA space), edge weights are redefined between all two cells based on the overlap in their neighborhood. This step is done using the FindNeighbors() function with the first 10 PCs as input. 
+To cluster the cells, modularity optimization techniques such as the Louvain algorithm or SLM are applied. Groups are iteratively clustered with the goal of optimizing the standard modularity function. The FindClusters() function is used therefore, this sets the granularity for downstream clustering (higher values, more clusters). 
 Settings: 0.4 - 1.2 for single-cell datasets with about 3K cells. The larger the dataset, the more likely is an optimal solution. With the Idents() function the clusters can be found. 
 
 
