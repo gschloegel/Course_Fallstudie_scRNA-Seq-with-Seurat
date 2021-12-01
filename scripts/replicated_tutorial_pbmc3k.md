@@ -5,7 +5,7 @@ Compiled: December 01, 2021
 
 ### Task specification: Case study
 
-In the following code replecates the [seurat
+In the following code replicates the [seurat
 tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html).
 The code for this notebook can be found
 [here](https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat/blob/main/scripts/replicated_tutorial_pbmc3k.rmd)
