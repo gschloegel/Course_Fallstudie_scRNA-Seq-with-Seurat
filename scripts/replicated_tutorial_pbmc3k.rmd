@@ -1,11 +1,16 @@
 ---
 title: "Replication and Description of Seurat Tutorial"
-# output: github_document
 
-output:
-  html_document:
-    theme: united
-    df_print: kable
+# output option 1: markdown for github
+
+output: github_document
+
+# output option 2: html
+
+# output:
+#   html_document:
+#     theme: united
+#     df_print: kable
 date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 author:
     'Guido Schlögel, Sonja Tockner'

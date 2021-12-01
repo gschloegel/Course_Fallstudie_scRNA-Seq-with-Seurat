@@ -1,11 +1,25 @@
-\hypertarget{case-study---replication-of-a-seurat-workflow}{%
-\section{Case Study - Replication of a Seurat
-workflow}\label{case-study---replication-of-a-seurat-workflow}}
+\documentclass[a4paper, 10pt]{scrartcl}
+\usepackage[utf8]{inputenc}
+%\usepackage[ngerman]{babel}
+\usepackage{graphicx,xcolor}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{hyperref}
 
-Autoren: Guido Schlögel 00727019 Sonja Tockner 00708717
+
+\typearea{11}
+
+\title{Case Study - Replication of a Seurat
+workflow}
+\author{Guido Schlögel 00727019 Sonja Tockner 00708717}
+
+\begin{document}
+
+\maketitle  
 
 \hypertarget{introduction}{%
-\subsection{Introduction}\label{introduction}}
+\section{Introduction}\label{introduction}}
 
 Replication of results is an important part of science. As it is
 important to avoid the replication crisis in data science, we want to
@@ -20,7 +34,7 @@ biological systems, but still lacks standardization (Luecken and Theis
 So what is it and why do we use it.
 
 \hypertarget{advantages-over-bulk-methods}{%
-\subsubsection{Advantages over bulk
+\subsection{Advantages over bulk
 methods}\label{advantages-over-bulk-methods}}
 
 In Single cell RNA-seq each sequencing library represents a single cell
@@ -50,7 +64,7 @@ a large population of input cells (e.g., a sample from the same tissue
 from different species).
 
 \hypertarget{basic-steps-of-the-scrna-seq-analysis}{%
-\subsubsection{Basic steps of the scRNA-Seq
+\subsection{Basic steps of the scRNA-Seq
 analysis}\label{basic-steps-of-the-scrna-seq-analysis}}
 
 The workflow for scRNA-Seq analysis basically consists of the
@@ -72,7 +86,6 @@ We will deal with the data analysis steps of the Seurat workflow, they
 include:
 
 \begin{itemize}
-\tightlist
 \item
   Preprocessing and Visualization
 \item
@@ -107,7 +120,7 @@ are:
 \end{itemize}
 
 \hypertarget{common-problems}{%
-\subsubsection{Common problems}\label{common-problems}}
+\subsection{Common problems}\label{common-problems}}
 
 As mentioned above standardization of workflows is still lacking.
 Various software packages are available for different programming
@@ -124,7 +137,7 @@ control are particularly important in all work steps in both
 applications, as they influence the entire further analysis.
 
 \hypertarget{challenges-in-integrating-single-cell-transcriptomic-data-across-different-conditions-technologies-and-species}{%
-\subsubsection{Challenges in integrating single-cell transcriptomic data
+\subsection{Challenges in integrating single-cell transcriptomic data
 across different conditions, technologies, and
 species}\label{challenges-in-integrating-single-cell-transcriptomic-data-across-different-conditions-technologies-and-species}}
 
@@ -157,7 +170,7 @@ scRNA Seq data are generally noisier and more complex than bulk RNA Seq
 data and therefore computational more challenging.
 
 \hypertarget{methods}{%
-\subsection{Methods}\label{methods}}
+\section{Methods}\label{methods}}
 
 We first analysed the existing workflow of the Seurat tutorial (Butler
 et al.~2018). We replicated the workflow and analysed it according to
@@ -178,7 +191,7 @@ features to get reliable results that can be compared between different
 samples.
 
 \hypertarget{setting-up-the-required-environment}{%
-\subsubsection{Setting up the required
+\subsection{Setting up the required
 environment}\label{setting-up-the-required-environment}}
 
 In this step we want to recreate the environment used in the original
@@ -211,7 +224,7 @@ different for every project and therefore it is sensible to set it up
 manually.
 
 \hypertarget{explaination-of-the-workflow}{%
-\subsubsection{Explaination of the
+\subsection{Explaination of the
 workflow}\label{explaination-of-the-workflow}}
 
 The workflow runs in the following basic steps:
@@ -313,10 +326,10 @@ unbiased clustering to known cell types (9 assignments: ``Naive CD4 T'',
 umap.
 
 \hypertarget{results}{%
-\subsection{Results}\label{results}}
+\section{Results}\label{results}}
 
 \hypertarget{is-a-replication-of-the-tutorial}{%
-\subsubsection{Is a replication of the
+\subsection{Is a replication of the
 tutorial}\label{is-a-replication-of-the-tutorial}}
 
 Generally a replication of the tutorial is possible. We compare the
@@ -423,7 +436,7 @@ Illumina HiSeq2500 with approximately 56,000 reads per cell * 26bp read1
 I7 sample barcode
 
 \hypertarget{challenges-of-the-new-dataset}{%
-\subsubsection{Challenges of the new
+\subsection{Challenges of the new
 dataset}\label{challenges-of-the-new-dataset}}
 
 One challenge was certainly to define the features/markers for the final
@@ -434,10 +447,9 @@ intensively. For this purpose it was necessary to look at the code in
 more detail in order to be able to make a meaningful selection.
 
 \hypertarget{required-modifications}{%
-\subsubsection{Required modifications}\label{required-modifications}}
+\subsection{Required modifications}\label{required-modifications}}
 
 \begin{itemize}
-\tightlist
 \item
   First the path had to be changed to the folder with the new dataset
 \item
@@ -457,7 +469,7 @@ more detail in order to be able to make a meaningful selection.
 \end{itemize}
 
 \hypertarget{comparison-to-original-dataset}{%
-\subsubsection{Comparison to original
+\subsection{Comparison to original
 dataset}\label{comparison-to-original-dataset}}
 
 The replication of the tutorial with the new dataset yielded results
@@ -467,7 +479,7 @@ dataset, which made the plots more difficult to interpret and the
 results not quite as impressive.
 
 \hypertarget{results-of-the-new-dataset}{%
-\subsubsection{Results of the new
+\subsection{Results of the new
 dataset}\label{results-of-the-new-dataset}}
 
 As mentioned above we were able to use the workflow for our new dataset.
@@ -476,7 +488,7 @@ gene highest fold change.
 
 \begin{figure}
 \centering
-\includegraphics{output/neurons_900_umap.jpg}
+\includegraphics[width=\textwidth]{../output/neurons_900_umap.jpg}
 \caption{named clusters}
 \end{figure}
 
@@ -485,7 +497,7 @@ do this we need more information about the dataset.
 
 \begin{figure}
 \centering
-\includegraphics{output/neurons_900_FeaturePlot.jpg}
+\includegraphics[width=\textwidth]{../output/neurons_900_FeaturePlot.jpg}
 \caption{named clusters}
 \end{figure}
 
@@ -496,7 +508,7 @@ tune the settings to get a different number of clusters better suited to
 the sample.
 
 \hypertarget{discussion}{%
-\subsection{Discussion}\label{discussion}}
+\section{Discussion}\label{discussion}}
 
 We want to note, that we we focused on the workflow and not on the data
 interpretation. To get more information we should combine our results
@@ -517,7 +529,7 @@ this point manual intervention is done. The rest of the analyses can be
 performed without manual intervention in a second function or method.
 
 \hypertarget{literature}{%
-\subsubsection{Literature}\label{literature}}
+\section*{Literature}\label{literature}}
 
 Luecken and Theis 2019. Current best practices in single-cell RNA-seq
 analysis: a tutorial. Molecular Systems Biology. 15(6):e8746.
@@ -530,3 +542,5 @@ different conditions, technologies, and species. Nat Biotechnol.
 Sandve et al.~2013. Ten Simple Rules for Reproducible Computational
 Research. PLOS Computational Biology. 9(10):e1003285.
 doi:10.1371/journal.pcbi.1003285.
+
+\end{document}

@@ -1,9 +1,17 @@
 ---
 title: "Adaption of workflow to new dataset"
-output:
-  html_document:
-    theme: united
-    df_print: kable
+
+# output option 1: markdown for github
+
+output: github_document
+
+# output option 2: html
+
+# output:
+#   html_document:
+#     theme: united
+#     df_print: kable
+
 date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 author:
     'Guido Schlögel, Sonja Tockner'
@@ -252,7 +260,7 @@ Nest we check our marker genes for the different clusters. We slice the biomarke
 FeaturePlot(pbmc, features = biomarkers$gene[c(TRUE, FALSE)])
 ```
 
-```{r save.img, include=FALSE}
+```{r, include=FALSE}
 library(ggplot2)
 plot <- FeaturePlot(pbmc, features = biomarkers$gene[c(TRUE, FALSE)]) + 
   theme(axis.title = element_text(size = 18), legend.text = element_text(size = 18)) + 

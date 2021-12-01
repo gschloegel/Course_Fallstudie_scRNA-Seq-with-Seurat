@@ -3,6 +3,11 @@
 Autoren: Guido Schlögel 00727019
          Sonja Tockner 00708717
 
+
+## Abstract
+
+While single cell RNA sequencing is an important tool in understanding biological systems, it still lacks standardization. To assess this we analyse the reproducibility of the Seurat package. We did this theoretically, replicated the tutorial and tested the workflow with different data. We concluded that replication is possible but some manual interventions are necessary that could lead to diverging results.
+
 ## Introduction
 
 Replication of results is an important part of science. As it is important to avoid the replication crisis in data science, we want to show in this exercise how the Seurat tutorial for single cell RNA sequencing (scRNA-Seq) can be replicated and adapted to a different dataset.
