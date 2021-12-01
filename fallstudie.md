@@ -6,7 +6,7 @@ Autoren: Guido Schlögel 00727019
 
 ## Abstract
 
-While single cell RNA sequencing is an important tool in understanding biological systems, it still lacks standardization. To assess this we analyse the reproducibility of the Seurat package. We did this theoretically, replicated the tutorial and tested the workflow with different data. We concluded that replication is possible but some manual interventions are necessary that could lead to diverging results.
+While single cell RNA sequencing is an important tool in understanding biological systems, it still lacks standardization. To assess this we analyze the reproducibility of the Seurat package. We did this theoretically, replicated the tutorial and tested the workflow with different data. We concluded that replication is possible but some manual interventions are necessary that could lead to diverging results.
 
 ## Introduction
 
@@ -14,7 +14,7 @@ Replication of results is an important part of science. As it is important to av
 
 scRNA-Seq is chosen as it became an important tool to understand biological systems, but still lacks standardization (Luecken and Theis 2019).
 
-So what is it and why do we use it.
+So what is it and why do we use it?
 
 ###  Advantages over bulk methods
 
@@ -27,7 +27,7 @@ scRNA Seq enables detailed analysis of individual cells and reveals cellular het
 The workflow for scRNA-Seq analysis basically consists of the preprocessing step of the raw data (quality control, normalization, data correction, feature selection and dimensions reduction) and the cell-and gene level downstream analysis of the count data.  
 Biological tissue samples are used as input material. First, single-cell dissociation is performed, a suspension is generated, and the tissue is digested. This is followed by the isolation of the single cells. A distinction is made between plate-based and droplet-based methods. 
 
- In the next step, library construction is performed (breaking down the cell membrane), intracellular mRNA is captured, reverse-transcribed to cDNA molecules and amplified. The mRNA is then labeled with barcodes and possibly UMIs. Libraries are pooled for sequencing. Sequencing produces read data and is submitted to quality control.
+In the next step, library construction is performed (breaking down the cell membrane), intracellular mRNA is captured, reverse-transcribed to cDNA molecules and amplified. The mRNA is then labeled with barcodes and possibly UMIs. Libraries are pooled for sequencing. Sequencing produces read data and is submitted to quality control.
 
 We will deal with the data analysis steps of the Seurat workflow, they include:
 
@@ -49,7 +49,7 @@ With this results different downstream steps are possible. 3 examples are:
 
 As mentioned above standardization of workflows is still lacking. Various software packages are available for different programming languages, Seurat is just one example. Deciding on one tool can make it difficult to compare data with other groups or change the platform at a later date. It is therefore necessary to make a selection with regards to the specific question.
  
- Some problems have already been addressed in the ScRNA Seq description, for example that cells form duplicates or that in some vials there are no cells at all. In general, many problems can already arise during sampling and preprocessing, which is why sample preparation and quality control are particularly important in all work steps in both applications, as they influence the entire further analysis.
+Some problems have already been addressed in the ScRNA Seq description, for example that cells form duplicates or that in some vials there are no cells at all. In general, many problems can already arise during sampling and preprocessing, which is why sample preparation and quality control are particularly important in all work steps in both applications, as they influence the entire further analysis.
 
 ### Challenges in integrating single-cell transcriptomic data across different conditions, technologies, and species
 
@@ -61,11 +61,11 @@ scRNA Seq data are generally noisier and more complex than bulk RNA Seq data and
 
 ## Methods
 
-We first analysed the existing workflow of the Seurat tutorial (Butler et al. 2018). We replicated the workflow and analysed it according to the "Ten Simple Rules for Reproducible Computational
-Research" (Sandve et al. 2013)
+We first analyzed the existing workflow of the Seurat tutorial (Butler et al. 2018). We replicated the workflow and analyzed it according to the "Ten Simple Rules for Reproducible Computational Research" (Sandve et al. 2013) 
+
 ### What problem does the workflow at hand address
 
-The Seurat workflow analyses a dataset of Peripheral Blood Mononuclear Cells (PBMCs) from 10X Genomics and consists out of 2700 single cell data sequenced with Illumina's NextSeq 500.. Raw single-cell expression data are used as an input. Aim of the workflow is finding clusters in the data with a graph-based clustering method. It uses a combination of feature selection, dimensionality reduction and clustering algorithms to identify cell types. 
+The Seurat workflow analyses a dataset of Peripheral Blood Mononuclear Cells (PBMCs) from 10X Genomics and consists out of 2700 single cell data sequenced with Illumina's NextSeq 500. Raw single-cell expression data are used as an input. Aim of the workflow is finding clusters in the data with a graph-based clustering method. It uses a combination of feature selection, dimensionality reduction and clustering algorithms to identify cell types. 
 We use the Seurat workflow to robustly separate different cell types in the sample. The target is to integrate the whole workflow from data pre-processing to separation of cell types and the assignment of cell types to the clusters. It used highly variable features to get reliable results that can be compared between different samples.
 
 ### Setting up the required environment
@@ -78,11 +78,11 @@ to create the environment. We kept the package versions used in the tutorial to 
  
 mamba is used instead of conda to speed up the environment management. This is especially relevant as we use the large conda forge channel. 
 
-We noticed that is is advisable to set up conda forge as default channel. Failing to do so we got incompatibilities with outdated packages form the default repository.
+We noticed that it is advisable to set up conda forge as default channel. Failing to do so we got incompatibilities with outdated packages from the default repository.
 
-It is also required to create the folder structure manually. The notebooks have to be in a subfolder (scripts in our case), the exact location of the data files has to be set in the notebook and an output folder must be present before running the code. While this could be automated with a bash skript, we believe the folder structure will be different for every project and therefore it is sensible to set it up manually.
+It is also required to create the folder structure manually. The notebooks have to be in a subfolder (scripts in our case), the exact location of the data files has to be set in the notebook and an output folder must be present before running the code. While this could be automated with a bash script, we believe the folder structure will be different for every project and therefore it is sensible to set it up manually.
 
-### Explaination of the workflow
+### Explanation of the workflow
 
 The workflow runs in the following basic steps:
 
@@ -105,7 +105,7 @@ After the PCA we need to know how many dimensions are needed for the further ana
 
 #### Cluster the cells
 
-For clustering the cells Seurat uses a graph-based clustering approach. The distance metric remains the same and is based on the previously identified PCs. The approach is based on manuscripts applied to graph-based clustering approaches with scRNA seq data and is characterized by a graph structure, e.g., KNN nearest neighbors. As we do not know a priory how many clusters/cell type we will find this is a sensible approach. The clusters are displayed using the UMAP non linear dimension reduction.
+For clustering the cells Seurat uses a graph-based clustering approach. The distance metric remains the same and is based on the previously identified PCs. The approach is based on manuscripts applied to graph-based clustering approaches with scRNA seq data and is characterized by a graph structure, e.g., KNN nearest neighbors. As we do not know a priory how many clusters/cell type we will find this is a sensible approach. The clusters are displayed using the UMAP nonlinear dimension reduction.
 
 #### Finding differentially expressed features
 
@@ -113,11 +113,11 @@ Then, biomarkers must be found which define clusters through differential gene e
 
 #### Visualization of the marker expression/results
 
-The violin plot shows the expression probability distribution over the clusters. The feature plot visualizes the feature expression. As the last step in the workflow, canonical markers are sent to assign the unbiased clustering to known cell types (9 assignments: "Naive CD4 T", "CD14 + Mono", "Memory CD4 T", "B", "CD8 T", " FCGR3A + Mono ", "NK", "DC", "Platelet"). The new clusters are visualized as an umap.
+The violin plot shows the expression probability distribution over the clusters. The feature plot visualizes the feature expression. As the last step in the workflow, canonical markers are sent to assign the unbiased clustering to known cell types (9 assignments: "Naive CD4 T", "CD14 + Mono", "Memory CD4 T", "B", "CD8 T", " FCGR3A + Mono ", "NK", "DC", "Platelet"). The new clusters are visualized as an UMAP.
 
 ## Results
 
-### Is a replication of the tutorial
+### Is a replication of the tutorial possible?
 
 Generally a replication of the tutorial is possible. We compare the tutorial with the 10 rules/recommendations from Sandve et al. 2013:
 
@@ -127,7 +127,7 @@ The Tutorial is available as R-notebook and vignette. So all Steps and R command
 
 #### Rule 2: Avoid Manual Data Manipulation Steps
 
- The data are not manually manipulated, but there are a couple of manual interventions in the script, for example the cut off in the pre-processing, the number of PCs used for further analysis and the feature selection for the cell type assignment. Without concrete rules for these decisions reproducible results are difficult to obtain.
+The data are not manually manipulated, but there are a couple of manual interventions in the script, for example the cut off in the pre-processing, the number of PCs used for further analysis and the feature selection for the cell type assignment. Without concrete rules for these decisions reproducible results are difficult to obtain.
 
 ### Rule 3. Archive the Exact Versions of All External Programs Used
 
@@ -143,11 +143,11 @@ The created Seurat Object is saved as an .rds file. As this is standard in R and
 
 #### Rule 6 For Analyses That Include Randomness, Note Underlying Random Seeds
 
-The way the Seurat packages deal with randomness, was confusing for us. The seed is not set in the notebook, but hidden in the Seurat package. This leds to the strange situation that for example the Jack Straw Plot differs visibly, if not significantly, from the tutorial, but there is no random change when run again as expected. The difference is due to the different handling of seed values on different operating systems. For us it had been nicer to set the seed in the final notebook to avoid confusion.
+The way the Seurat packages deal with randomness, was confusing for us. The seed is not set in the notebook, but hidden in the Seurat package. This leads to the strange situation that for example the Jack Straw Plot differs visibly, if not significantly, from the tutorial, but there is no random change when run again as expected. The difference is due to the different handling of seed values on different operating systems. For us it had been nicer to set the seed in the final notebook to avoid confusion.
 
 #### Rule 7: Always Store Raw Data behind Plots
 
-Most of the plots just require the Seurat object, which is covered in Rule 5. It would be nice to store additional data, like used features and cluster labels' in an easier to read form. In the current form they are in the code. So everything is reproducible, but not always easy to find.
+Most of the plots just require the Seurat object, which is covered in Rule 5. It would be nice to store additional data, like used features and cluster labels in an easier to read form. In the current form they are in the code. So everything is reproducible, but not always easy to find.
 
 #### Rule 8 Generate Hierarchical Analysis Output, Allowing Layers of Increasing Detail to Be Inspected
 
@@ -194,7 +194,7 @@ The replication of the tutorial with the new dataset yielded results with the ne
 
 As mentioned above we were able to use the workflow for our new dataset. We were able to find 7 different clusters and annotated them with the gene highest fold change.
 
-![named clusters](output/neurons_900_umap.jpg "Observed clusters labaled by the gene with the highest Fold Change")
+![named clusters](output/neurons_900_umap.jpg "Observed clusters labeled by the gene with the highest Fold Change")
 
 We observed that 1 marker gene in not enough to identify the cluster. To do this we need more information about the dataset.
 
@@ -204,7 +204,7 @@ We see that the genes are present in the corresponding clusters, but there are l
 
 ## Discussion
 
-We want to note, that we we focused on the workflow and not on the data interpretation. To get more information we should combine our results with biological information about the sample.
+We want to note, that we focused on the workflow and not on the data interpretation. To get more information we should combine our results with biological information about the sample.
 
 It is possible to reproduce the tutorial and use the method on a different dataset. While it worked well there are some options to make it easier. First the form of a notebook makes it difficult to see where parameters are set and manual interventions are necessary. It is hard to make changes without checking the whole code. In our opinion it would be easier to write the code in functions or methods and use all variables as function parameters. Notebooks are suited for presentation but are limited for simply reusable code.
 
