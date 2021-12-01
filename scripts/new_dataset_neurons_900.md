@@ -167,7 +167,7 @@ DimPlot(pbmc, reduction = "pca")
 ![](new_dataset_neurons_900_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 We observe that PC1 is evenly distributed while PC2 is influenced by a
-low number of values. \#\# Visualization with DimHeatmap(). As in the
+low number of values. \#\# Visualization with DimHeatmap() As in the
 original Tutorial we use the heat maps to select the PCs containing the
 most relevant information for our dataset. We observe that the
 separation is not optimal and that PC1 has the biggest impact.
@@ -183,9 +183,9 @@ DimHeatmap(pbmc, dims = 1:15, cells = 500, balanced = TRUE)
 ```
 
 ![](new_dataset_neurons_900_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
-\#\# Determine the dimensionality of a dataset. We use the JackStraw plot as well as the EllbowPlot to determine the number of PCs used for
-further analysis. 
-\#\#\# Jack Straw Plot
+\#\# Determine the dimensionality of a dataset We use the JackStraw plot
+as well as the EllbowPlot the determine the number of PCs used for
+further analysis. \#\#\# Jack Straw Plot
 
 ``` r
 # NOTE: This process can take a long time for big datasets, comment out for expediency. More
@@ -211,9 +211,8 @@ ElbowPlot(pbmc, ndims = 30)
 ```
 
 ![](new_dataset_neurons_900_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
-\#\#\# Select PCs
-The Jack Straw Plot is not conclusive. The ellbow plot
-suggests that 15 PCs could be a good choice. We will later try different
+\#\#\# Select PCs The Jack Straw Plot is not conclusive. The ellbow plot
+suggest that 15 PCs could be a good choice. We will later try different
 amount of PCs to check if the results are robust to these changes.
 
 ``` r

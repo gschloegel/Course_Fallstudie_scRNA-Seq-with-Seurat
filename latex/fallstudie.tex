@@ -7,16 +7,28 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\typearea{11}
+\typearea{13}
 
 \title{Case Study - Replication of a Seurat
 workflow}
-\author{Guido Schlögel 00727019 Sonja Tockner 00708717}
+\author{Guido Schlögel, Sonja Tockner}
 
 \begin{document}
 
-\maketitle  
+\maketitle
+
+\hypertarget{abstract}{%
+\section*{Abstract}\label{abstract}}
+
+While single cell RNA sequencing is an important tool in understanding
+biological systems, it still lacks standardization. To assess this we
+analyze the reproducibility of the Seurat package. We did this
+theoretically, replicated the tutorial and tested the workflow with
+different data. We concluded that replication is possible but some
+manual interventions are necessary that could lead to diverging results.
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
@@ -31,7 +43,7 @@ scRNA-Seq is chosen as it became an important tool to understand
 biological systems, but still lacks standardization (Luecken and Theis
 2019).
 
-So what is it and why do we use it.
+So what is it and why do we use it?
 
 \hypertarget{advantages-over-bulk-methods}{%
 \subsection{Advantages over bulk
@@ -70,7 +82,8 @@ analysis}\label{basic-steps-of-the-scrna-seq-analysis}}
 The workflow for scRNA-Seq analysis basically consists of the
 preprocessing step of the raw data (quality control, normalization, data
 correction, feature selection and dimensions reduction) and the cell-and
-gene level downstream analysis of the count data.\\
+gene level downstream analysis of the count data.
+
 Biological tissue samples are used as input material. First, single-cell
 dissociation is performed, a suspension is generated, and the tissue is
 digested. This is followed by the isolation of the single cells. A
@@ -86,6 +99,7 @@ We will deal with the data analysis steps of the Seurat workflow, they
 include:
 
 \begin{itemize}
+\tightlist
 \item
   Preprocessing and Visualization
 \item
@@ -172,14 +186,18 @@ data and therefore computational more challenging.
 \hypertarget{methods}{%
 \section{Methods}\label{methods}}
 
-We first analysed the existing workflow of the Seurat tutorial (Butler
-et al.~2018). We replicated the workflow and analysed it according to
+We first analyzed the existing workflow of the Seurat tutorial (Butler
+et al.~2018). We replicated the workflow and analyzed it according to
 the ``Ten Simple Rules for Reproducible Computational Research'' (Sandve
-et al.~2013) \#\#\# What problem does the workflow at hand address
+et al.~2013)
+
+\hypertarget{what-problem-does-the-workflow-at-hand-address}{%
+\subsection{What problem does the workflow at hand
+address}\label{what-problem-does-the-workflow-at-hand-address}}
 
 The Seurat workflow analyses a dataset of Peripheral Blood Mononuclear
 Cells (PBMCs) from 10X Genomics and consists out of 2700 single cell
-data sequenced with Illumina's NextSeq 500.. Raw single-cell expression
+data sequenced with Illumina's NextSeq 500. Raw single-cell expression
 data are used as an input. Aim of the workflow is finding clusters in
 the data with a graph-based clustering method. It uses a combination of
 feature selection, dimensionality reduction and clustering algorithms to
@@ -200,37 +218,44 @@ options for this we decided to use anaconda (miniconda) for this task.
 We set up the conda forge channel as default and ran the following
 command:
 
-\texttt{mamba\ create\ -n\ seurat\ r-base=4.1.0\ r-ggplot2=3.3.5\ patchwork=1.1.1\ SeuratObject=4.0.2\ Seurat=4.0.4\ dplyr=1.0.7\ r-knitr=1.33}
+\begin{verbatim}
+mamba create -n seurat r-base=4.1.0 r-ggplot2=3.3.5 patchwork=1.1.1
+SeuratObject=4.0.2 Seurat=4.0.4 dplyr=1.0.7 r-knitr=1.33
+\end{verbatim}
+
 
 to create the environment. We kept the package versions used in the
 tutorial to avoid the risk of incompatibilities and tried to keep the
 environment as small as possible. The environment was exported as .yaml
-file to allow easy replication. This file is available on our GitHub
-page.
+file to allow easy replication. This file is available on our
+\href{https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat}{GitHub
+repository}.
 
 mamba is used instead of conda to speed up the environment management.
 This is especially relevant as we use the large conda forge channel.
 
-We noticed that is is advisable to set up conda forge as default
+We noticed that it is advisable to set up conda forge as default
 channel. Failing to do so we got incompatibilities with outdated
-packages form the default repository.
+packages from the default repository.
 
 It is also required to create the folder structure manually. The
 notebooks have to be in a subfolder (scripts in our case), the exact
 location of the data files has to be set in the notebook and an output
 folder must be present before running the code. While this could be
-automated with a bash skript, we believe the folder structure will be
+automated with a bash script, we believe the folder structure will be
 different for every project and therefore it is sensible to set it up
 manually.
 
-\hypertarget{explaination-of-the-workflow}{%
-\subsection{Explaination of the
-workflow}\label{explaination-of-the-workflow}}
+\hypertarget{explanation-of-the-workflow}{%
+\subsection{Explanation of the
+workflow}\label{explanation-of-the-workflow}}
 
-The workflow runs in the following basic steps:
+The workflow runs in the following basic steps. The code of our
+re-implementation of the workflow can be found
+\href{https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat/blob/main/scripts/replicated_tutorial_pbmc3k.md}{here}.
 
 \hypertarget{setting-up-the-seurat-object}{%
-\paragraph{Setting up the seurat
+\minisec{Setting up the seurat
 object}\label{setting-up-the-seurat-object}}
 
 Setting up the Seurat objects begins with reading in the data from the
@@ -244,7 +269,7 @@ Matrix is used to create the Seurat object, which contains both the data
 and the analyses (e.g., PCA, clustering results), for a data set.
 
 \hypertarget{pre-processing}{%
-\paragraph{Pre-processing}\label{pre-processing}}
+\minisec{Pre-processing}\label{pre-processing}}
 
 The preprocessing step is characterized by the selection and filtering
 of cells based on QC metrics, normalization of data and scaling or
@@ -262,7 +287,7 @@ by the total expression, multiplies by the scale factor (default 10000)
 and log-transforms the result.
 
 \hypertarget{identification-of-highly-variable-features-and-pca}{%
-\paragraph{Identification of highly variable features and
+\minisec{Identification of highly variable features and
 PCA}\label{identification-of-highly-variable-features-and-pca}}
 
 Next we limit the further steps to the features showing a high
@@ -278,7 +303,7 @@ relevant information can be found and which PCs and which loadings/genes
 are used later.
 
 \hypertarget{determine-dimensionality-of-dataset}{%
-\paragraph{Determine `dimensionality' of
+\minisec{Determine `dimensionality' of
 dataset}\label{determine-dimensionality-of-dataset}}
 
 After the PCA we need to know how many dimensions are needed for the
@@ -288,7 +313,7 @@ plot shows a ranking of PCs based on the percentage of variance
 explained (cutoff between PC 7 -12)
 
 \hypertarget{cluster-the-cells}{%
-\paragraph{Cluster the cells}\label{cluster-the-cells}}
+\minisec{Cluster the cells}\label{cluster-the-cells}}
 
 For clustering the cells Seurat uses a graph-based clustering approach.
 The distance metric remains the same and is based on the previously
@@ -296,11 +321,11 @@ identified PCs. The approach is based on manuscripts applied to
 graph-based clustering approaches with scRNA seq data and is
 characterized by a graph structure, e.g., KNN nearest neighbors. As we
 do not know a priory how many clusters/cell type we will find this is a
-sensible approach. The clusters are displayed using the UMAP non linear
+sensible approach. The clusters are displayed using the UMAP nonlinear
 dimension reduction.
 
 \hypertarget{finding-differentially-expressed-features}{%
-\paragraph{Finding differentially expressed
+\minisec{Finding differentially expressed
 features}\label{finding-differentially-expressed-features}}
 
 Then, biomarkers must be found which define clusters through
@@ -314,7 +339,7 @@ percentage in one of the two cell groups and must be expressed
 differently between the two groups.
 
 \hypertarget{visualization-of-the-marker-expressionresults}{%
-\paragraph{Visualization of the marker
+\minisec{Visualization of the marker
 expression/results}\label{visualization-of-the-marker-expressionresults}}
 
 The violin plot shows the expression probability distribution over the
@@ -323,28 +348,28 @@ last step in the workflow, canonical markers are sent to assign the
 unbiased clustering to known cell types (9 assignments: ``Naive CD4 T'',
 ``CD14 + Mono'', ``Memory CD4 T'', ``B'', ``CD8 T'', " FCGR3A + Mono
 ``,''NK``,''DC``,''Platelet"). The new clusters are visualized as an
-umap.
+UMAP.
 
 \hypertarget{results}{%
 \section{Results}\label{results}}
 
-\hypertarget{is-a-replication-of-the-tutorial}{%
-\subsection{Is a replication of the
-tutorial}\label{is-a-replication-of-the-tutorial}}
+\hypertarget{is-a-replication-of-the-tutorial-possible}{%
+\subsection{Is a replication of the tutorial
+possible?}\label{is-a-replication-of-the-tutorial-possible}}
 
 Generally a replication of the tutorial is possible. We compare the
 tutorial with the 10 rules/recommendations from Sandve et al.~2013:
 
 \hypertarget{rule-1-for-every-result-keep-track-of-how-it-was-produced}{%
-\paragraph{Rule 1: For Every Result, Keep Track of How It Was
-Produced}\label{rule-1-for-every-result-keep-track-of-how-it-was-produced}}
+\minisec{Rule 1: For every result, keep track of how it was
+produced}\label{rule-1-for-every-result-keep-track-of-how-it-was-produced}}
 
 The Tutorial is available as R-notebook and vignette. So all Steps and R
 commands are available.
 
 \hypertarget{rule-2-avoid-manual-data-manipulation-steps}{%
-\paragraph{Rule 2: Avoid Manual Data Manipulation
-Steps}\label{rule-2-avoid-manual-data-manipulation-steps}}
+\minisec{Rule 2: Avoid manual data manipulation
+steps}\label{rule-2-avoid-manual-data-manipulation-steps}}
 
 The data are not manually manipulated, but there are a couple of manual
 interventions in the script, for example the cut off in the
@@ -353,37 +378,37 @@ feature selection for the cell type assignment. Without concrete rules
 for these decisions reproducible results are difficult to obtain.
 
 \hypertarget{rule-3.-archive-the-exact-versions-of-all-external-programs-used}{%
-\subsubsection{Rule 3. Archive the Exact Versions of All External
-Programs
-Used}\label{rule-3.-archive-the-exact-versions-of-all-external-programs-used}}
+\minisec{Rule 3. Archive the exact versions of all external
+programs
+used}\label{rule-3.-archive-the-exact-versions-of-all-external-programs-used}}
 
 This is done with the \texttt{sessionInfo()} command. The version of R
 and the used packages is available.
 
 \hypertarget{rule-4-version-control-all-custom-scripts}{%
-\paragraph{Rule 4: Version Control All Custom
-Scripts}\label{rule-4-version-control-all-custom-scripts}}
+\minisec{Rule 4: Version control all custom
+scripts}\label{rule-4-version-control-all-custom-scripts}}
 
 The Seurat package has its own GitHub repository. Past versions of the
 Tutorial are available.
 
 \hypertarget{rule-5-record-all-intermediate-results-when-possible-in-standardized-formats}{%
-\paragraph{Rule 5: Record All Intermediate Results, When Possible in
-Standardized
-Formats}\label{rule-5-record-all-intermediate-results-when-possible-in-standardized-formats}}
+\minisec{Rule 5: Record all intermediate results, when possible in
+standardized
+formats}\label{rule-5-record-all-intermediate-results-when-possible-in-standardized-formats}}
 
 The created Seurat Object is saved as an .rds file. As this is standard
 in R and further analysis will be done with R as well, this is a good
 choice.
 
 \hypertarget{rule-6-for-analyses-that-include-randomness-note-underlying-random-seeds}{%
-\paragraph{Rule 6 For Analyses That Include Randomness, Note Underlying
-Random
-Seeds}\label{rule-6-for-analyses-that-include-randomness-note-underlying-random-seeds}}
+\minisec{Rule 6: For analyses that include randomness, note underlying
+random
+seeds}\label{rule-6-for-analyses-that-include-randomness-note-underlying-random-seeds}}
 
 The way the Seurat packages deal with randomness, was confusing for us.
 The seed is not set in the notebook, but hidden in the Seurat package.
-This leds to the strange situation that for example the Jack Straw Plot
+This leads to the strange situation that for example the Jack Straw Plot
 differs visibly, if not significantly, from the tutorial, but there is
 no random change when run again as expected. The difference is due to
 the different handling of seed values on different operating systems.
@@ -391,49 +416,62 @@ For us it had been nicer to set the seed in the final notebook to avoid
 confusion.
 
 \hypertarget{rule-7-always-store-raw-data-behind-plots}{%
-\paragraph{Rule 7: Always Store Raw Data behind
-Plots}\label{rule-7-always-store-raw-data-behind-plots}}
+\minisec{Rule 7: Always store raw data behind
+plots}\label{rule-7-always-store-raw-data-behind-plots}}
 
 Most of the plots just require the Seurat object, which is covered in
 Rule 5. It would be nice to store additional data, like used features
-and cluster labels' in an easier to read form. In the current form they
+and cluster labels in an easier to read form. In the current form they
 are in the code. So everything is reproducible, but not always easy to
 find.
 
 \hypertarget{rule-8-generate-hierarchical-analysis-output-allowing-layers-of-increasing-detail-to-be-inspected}{%
-\paragraph{Rule 8 Generate Hierarchical Analysis Output, Allowing Layers
-of Increasing Detail to Be
-Inspected}\label{rule-8-generate-hierarchical-analysis-output-allowing-layers-of-increasing-detail-to-be-inspected}}
+\minisec{Rule 8 Generate hierarchical analysis output, allowing layers
+of increasing detail to be
+inspected}\label{rule-8-generate-hierarchical-analysis-output-allowing-layers-of-increasing-detail-to-be-inspected}}
 
-The Tutorial is more a way to show the capabilities of the package than
+The tutorial is more a way to show the capabilities of the package than
 a good way to represent results. Therefore rule is not applied.
 
 \hypertarget{rule-9-connect-textual-statements-to-underlying-results}{%
-\paragraph{Rule 9: Connect Textual Statements to Underlying
-Results}\label{rule-9-connect-textual-statements-to-underlying-results}}
+\minisec{Rule 9: Connect textual statements to underlying
+results}\label{rule-9-connect-textual-statements-to-underlying-results}}
 
 Similar to rule 8 this is missing as a thorough explanation of the
 results is not part of the tutorial.
 
 \hypertarget{rule-10-provide-public-access-to-scripts-runs-and-results}{%
-\paragraph{Rule 10: Provide Public Access to Scripts, Runs, and
-Results}\label{rule-10-provide-public-access-to-scripts-runs-and-results}}
+\minisec{Rule 10: Provide public access to Scripts, runs, and
+results}\label{rule-10-provide-public-access-to-scripts-runs-and-results}}
 
 The code is available in the GitHub repository.
 
 \hypertarget{analysis-on-own-dataset}{%
-\subsubsection{Analysis on own dataset}\label{analysis-on-own-dataset}}
+\subsection{Analysis on own dataset}\label{analysis-on-own-dataset}}
 
-A new dataset was introduced to test the possibility to reuse the code.
+A new dataset was introduced to test the possibility to reuse the
+code.Our results can be found in
+\href{https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat/blob/main/scripts/new_dataset_neurons_900.md}{this
+notebook}
 
 The dataset we used is from 10X Genomics.
+
 https://www.10xgenomics.com/resources/datasets/1-k-brain-cells-from-an-e-18-mouse-2-standard-2-1-0
 
 Description: Cells from a combined cortex, hippocampus and sub
-ventricular zone of an E18 mouse. * 931 cells detected * Sequenced on
-Illumina HiSeq2500 with approximately 56,000 reads per cell * 26bp read1
-(16bp Chromium barcode and 10bp UMI), 98bp read2 (transcript), and 8bp
-I7 sample barcode
+ventricular zone of an E18 mouse.
+
+\begin{itemize}
+\tightlist
+\item
+  931 cells detected
+\item
+  Sequenced on Illumina HiSeq2500 with approximately 56,000 reads per
+  cell
+\item
+  26bp read1 (16bp Chromium barcode and 10bp UMI), 98bp read2
+  (transcript), and 8bp I7 sample barcode
+\end{itemize}
 
 \hypertarget{challenges-of-the-new-dataset}{%
 \subsection{Challenges of the new
@@ -450,6 +488,7 @@ more detail in order to be able to make a meaningful selection.
 \subsection{Required modifications}\label{required-modifications}}
 
 \begin{itemize}
+\tightlist
 \item
   First the path had to be changed to the folder with the new dataset
 \item
@@ -484,33 +523,33 @@ dataset}\label{results-of-the-new-dataset}}
 
 As mentioned above we were able to use the workflow for our new dataset.
 We were able to find 7 different clusters and annotated them with the
-gene highest fold change.
+gene highest fold change. Figure \ref{fig:cluster} shows the results.
 
 \begin{figure}
+  \label{fig:cluster}
 \centering
-\includegraphics[width=\textwidth]{../output/neurons_900_umap.jpg}
-\caption{named clusters}
+\includegraphics[width=0.9\textwidth]{../output/neurons_900_umap.jpg}
+\caption{Final output of the clustering algorithm. The detected clusters are named by gene with the highest positive fold change}
 \end{figure}
 
-We observed that 1 marker gene in not enough to identify the cluster. To
-do this we need more information about the dataset.
+Figure \ref{fig:gene_expression} shows the distribution of gene expression for these marker genes. We observed that 1 marker gene in not enough to identify the cluster. To do this we need more information about the dataset.
 
 \begin{figure}
+  \label{fig:gene_expression}
 \centering
-\includegraphics[width=\textwidth]{../output/neurons_900_FeaturePlot.jpg}
-\caption{named clusters}
+\includegraphics[width=0.9\textwidth]{../output/neurons_900_FeaturePlot.jpg}
+\caption{Expression of the genes used to identify clusters.}
 \end{figure}
 
 We see that the genes are present in the corresponding clusters, but
-there are limitations. For example the Rein gene is only present in part
-of the cluster associated with it. It could also be necessary to fine
+there are limitations. For example the Rein gene is only present in part of the cluster associated with it. It could also be necessary to fine
 tune the settings to get a different number of clusters better suited to
 the sample.
 
 \hypertarget{discussion}{%
-\section{Discussion}\label{discussion}}
+\subsection{Discussion}\label{discussion}}
 
-We want to note, that we we focused on the workflow and not on the data
+We want to note, that we focused on the workflow and not on the data
 interpretation. To get more information we should combine our results
 with biological information about the sample.
 
@@ -529,16 +568,14 @@ this point manual intervention is done. The rest of the analyses can be
 performed without manual intervention in a second function or method.
 
 \hypertarget{literature}{%
-\section*{Literature}\label{literature}}
+\subsubsection{Literature}\label{literature}}
 
 Luecken and Theis 2019. Current best practices in single-cell RNA-seq
 analysis: a tutorial. Molecular Systems Biology. 15(6):e8746.
-doi:10.15252/msb.20188746.
-
+doi:10.15252/msb.20188746.\\
 Butler et al.~2018. Integrating single-cell transcriptomic data across
 different conditions, technologies, and species. Nat Biotechnol.
-36(5):411--420. doi:10.1038/nbt.4096.
-
+36(5):411--420. doi:10.1038/nbt.4096.\\
 Sandve et al.~2013. Ten Simple Rules for Reproducible Computational
 Research. PLOS Computational Biology. 9(10):e1003285.
 doi:10.1371/journal.pcbi.1003285.

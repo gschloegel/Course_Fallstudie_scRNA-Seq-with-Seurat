@@ -48,7 +48,7 @@ With this results different downstream steps are possible. 3 examples are:
 ### Common problems
 
 As mentioned above standardization of workflows is still lacking. Various software packages are available for different programming languages, Seurat is just one example. Deciding on one tool can make it difficult to compare data with other groups or change the platform at a later date. It is therefore necessary to make a selection with regards to the specific question.
- 
+
 Some problems have already been addressed in the ScRNA Seq description, for example that cells form duplicates or that in some vials there are no cells at all. In general, many problems can already arise during sampling and preprocessing, which is why sample preparation and quality control are particularly important in all work steps in both applications, as they influence the entire further analysis.
 
 ### Challenges in integrating single-cell transcriptomic data across different conditions, technologies, and species
@@ -74,7 +74,7 @@ In this step we want to recreate the environment used in the original notebook i
 
 `mamba create -n seurat r-base=4.1.0 r-ggplot2=3.3.5 patchwork=1.1.1 SeuratObject=4.0.2 Seurat=4.0.4 dplyr=1.0.7 r-knitr=1.33`
 
-to create the environment. We kept the package versions used in the tutorial to avoid the risk of incompatibilities and tried to keep the environment as small as possible. The environment was exported as .yaml file to allow easy replication. This file is available on our GitHub page.
+to create the environment. We kept the package versions used in the tutorial to avoid the risk of incompatibilities and tried to keep the environment as small as possible. The environment was exported as .yaml file to allow easy replication. This file is available on our [GitHub repository](https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat).
  
 mamba is used instead of conda to speed up the environment management. This is especially relevant as we use the large conda forge channel. 
 
@@ -84,7 +84,7 @@ It is also required to create the folder structure manually. The notebooks have 
 
 ### Explanation of the workflow
 
-The workflow runs in the following basic steps:
+The workflow runs in the following basic steps. The code of our re-implementation of the workflow can be found [here](https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat/blob/main/scripts/replicated_tutorial_pbmc3k.md).
 
 #### Setting up the seurat object
 
@@ -119,57 +119,59 @@ The violin plot shows the expression probability distribution over the clusters.
 
 ### Is a replication of the tutorial possible?
 
-Generally a replication of the tutorial is possible. We compare the tutorial with the 10 rules/recommendations from Sandve et al. 2013:
+Generally a replication of the tutorial is possible.  We compare the tutorial with the 10 rules/recommendations from Sandve et al. 2013:
 
-#### Rule 1: For Every Result, Keep Track of How It Was Produced
+#### Rule 1: For every result, keep track of how it was produced
 
 The Tutorial is available as R-notebook and vignette. So all Steps and R commands are available.
 
-#### Rule 2: Avoid Manual Data Manipulation Steps
+#### Rule 2: Avoid manual data manipulation steps
 
 The data are not manually manipulated, but there are a couple of manual interventions in the script, for example the cut off in the pre-processing, the number of PCs used for further analysis and the feature selection for the cell type assignment. Without concrete rules for these decisions reproducible results are difficult to obtain.
 
-### Rule 3. Archive the Exact Versions of All External Programs Used
+### Rule 3. Archive the exact versions of all external programs used
 
 This is done with the `sessionInfo()` command. The version of R and the used packages is available.
 
-#### Rule 4: Version Control All Custom Scripts
+#### Rule 4: Version control all custom scripts
 
 The Seurat package has its own GitHub repository. Past versions of the Tutorial are available.
 
-#### Rule 5: Record All Intermediate Results, When Possible in Standardized Formats
+#### Rule 5: Record all intermediate results, when possible in standardized formats
 
 The created Seurat Object is saved as an .rds file. As this is standard in R and further analysis will be done with R as well, this is a good choice.
 
-#### Rule 6 For Analyses That Include Randomness, Note Underlying Random Seeds
+#### Rule 6: For analyses that include randomness, note underlying random seeds
 
 The way the Seurat packages deal with randomness, was confusing for us. The seed is not set in the notebook, but hidden in the Seurat package. This leads to the strange situation that for example the Jack Straw Plot differs visibly, if not significantly, from the tutorial, but there is no random change when run again as expected. The difference is due to the different handling of seed values on different operating systems. For us it had been nicer to set the seed in the final notebook to avoid confusion.
 
-#### Rule 7: Always Store Raw Data behind Plots
+#### Rule 7: Always store raw data behind plots
 
 Most of the plots just require the Seurat object, which is covered in Rule 5. It would be nice to store additional data, like used features and cluster labels in an easier to read form. In the current form they are in the code. So everything is reproducible, but not always easy to find.
 
-#### Rule 8 Generate Hierarchical Analysis Output, Allowing Layers of Increasing Detail to Be Inspected
+#### Rule 8 Generate hierarchical analysis output, allowing layers of increasing detail to be inspected
 
-The Tutorial is more a way to show the capabilities of the package than a good way to represent results. Therefore rule is not applied.
+The tutorial is more a way to show the capabilities of the package than a good way to represent results. Therefore rule is not applied.
 
-#### Rule 9: Connect Textual Statements to Underlying Results
+#### Rule 9: Connect textual statements to underlying results
 
 Similar to rule 8 this is missing as a thorough explanation of the results is not part of the tutorial.
 
-#### Rule 10: Provide Public Access to Scripts, Runs, and Results
+#### Rule 10: Provide public access to Scripts, runs, and results
 
 The code is available in the GitHub repository.
 
 ### Analysis on own dataset
 
-A new dataset was introduced to test the possibility to reuse the code.
+A new dataset was introduced to test the possibility to reuse the code.Our results can be found in [this notebook](https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat/blob/main/scripts/new_dataset_neurons_900.md)
 
-The dataset we used is from 10X Genomics. 
+The dataset we used is from 10X Genomics.
+
 https://www.10xgenomics.com/resources/datasets/1-k-brain-cells-from-an-e-18-mouse-2-standard-2-1-0
 
 Description:
 Cells from a combined cortex, hippocampus and sub ventricular zone of an E18 mouse.
+
 * 931 cells detected
 * Sequenced on Illumina HiSeq2500 with approximately 56,000 reads per cell
 * 26bp read1 (16bp Chromium barcode and 10bp UMI), 98bp read2 (transcript), and 8bp I7 sample barcode

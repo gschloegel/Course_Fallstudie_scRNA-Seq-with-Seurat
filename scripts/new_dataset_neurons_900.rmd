@@ -3,14 +3,14 @@ title: "Adaption of workflow to new dataset"
 
 # output option 1: markdown for github
 
-output: github_document
+# output: github_document
 
 # output option 2: html
 
-# output:
-#   html_document:
-#     theme: united
-#     df_print: kable
+output:
+  html_document:
+    theme: united
+    df_print: kable
 
 date: 'Compiled: `r format(Sys.Date(), "%B %d, %Y")`'
 author:
