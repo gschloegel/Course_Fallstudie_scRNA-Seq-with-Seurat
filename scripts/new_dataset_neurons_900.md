@@ -167,7 +167,7 @@ DimPlot(pbmc, reduction = "pca")
 ![](new_dataset_neurons_900_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 We observe that PC1 is evenly distributed while PC2 is influenced by a
-low number of values. \#\# Visualization with DimHeatmap() As in the
+low number of values. \#\# Visualization with DimHeatmap(). As in the
 original Tutorial we use the heat maps to select the PCs containing the
 most relevant information for our dataset. We observe that the
 separation is not optimal and that PC1 has the biggest impact.
