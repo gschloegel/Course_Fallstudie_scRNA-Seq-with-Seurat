@@ -211,8 +211,9 @@ ElbowPlot(pbmc, ndims = 30)
 ```
 
 ![](new_dataset_neurons_900_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
-\#\#\# Select PCs The Jack Straw Plot is not conclusive. The ellbow plot
-suggest that 15 PCs could be a good choice. We will later try different
+\#\#\# Select PCs
+The Jack Straw Plot is not conclusive. The ellbow plot
+suggests that 15 PCs could be a good choice. We will later try different
 amount of PCs to check if the results are robust to these changes.
 
 ``` r
