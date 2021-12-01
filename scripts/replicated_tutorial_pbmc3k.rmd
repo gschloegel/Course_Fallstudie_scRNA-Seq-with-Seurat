@@ -41,7 +41,7 @@ knitr::opts_chunk$set(
 
 ### Task specification: Case study
 
-In the following code replecates the [seurat tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html). The code for this notebook can be found [here](https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat/blob/main/scripts/replicated_tutorial_pbmc3k.rmd)
+In the following code replicates the [seurat tutorial](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html). The code for this notebook can be found [here](https://github.com/gschloegel/Course_Fallstudie_scRNA-Seq-with-Seurat/blob/main/scripts/replicated_tutorial_pbmc3k.rmd)
 
 A dataset of Peripheral Blood Mononuclear Cells(PBMC) is analyzed. The dataset is from 10X Genomics and consists out of 2700 single cells sequenced with Illumina's NextSeq 500. 
 
