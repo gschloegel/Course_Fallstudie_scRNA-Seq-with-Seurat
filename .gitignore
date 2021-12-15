@@ -40,3 +40,5 @@ vignettes/*.pdf
 
 # output folder
 output
+!output/*.jpg
+!output/*.png
