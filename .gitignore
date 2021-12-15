@@ -39,6 +39,6 @@ vignettes/*.pdf
 .Renviron
 
 # output folder
-output
+output/*
 !output/*.jpg
 !output/*.png
